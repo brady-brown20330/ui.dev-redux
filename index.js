@@ -1,9 +1,19 @@
 // reduces state and action to new state
 function todos (state = [], action) {
-  if (action.type === 'ADD_TODO') return state.concat([action.todo])
+  if (action.type === 'ADD_TODO') {
+    return state.concat([action.todo])
 
+  } else if (action.type === 'REMOVE_TODO'){
+    return state.filter((todo) => todo.id !== action.id)
 
-  return state;
+  } else if (action.type === 'TOGGLE_TODO'){
+    return state.map((todo) => todo.id !== action.id ? todo : 
+      Object.assign({}, todo, {complete: !todo.complete})
+    )
+    
+  } else {
+   return state; 
+  }
 }
 
 function createStore(reducer) {
@@ -26,7 +36,7 @@ function createStore(reducer) {
   }
 
   const dispatch = (action) => {
-    // call todos function
+    // call reducer function
     state = reducer(state, action)
     
     // loop over listners and invoke them
