@@ -1,23 +1,12 @@
-let addTodo = {
-  'type': 'ADD_TODO',
-  'todo': {
-    'id': 0,
-    'name': 'Learn Redux',
-    'complete': false
-  }
+// reduces state and action to new state
+function todos (state = [], action) {
+  if (action.type === 'ADD_TODO') return state.concat([action.todo])
+
+
+  return state;
 }
 
-let removeTodo = {
-  'type': 'REMOVE_TODO',
-  'id': 0
-}
-
-let toggleTodo = {
-  'type': 'TOGGLE_TODO',
-  'id': 0
-}
-
-function createStore() {
+function createStore(reducer) {
 //the store has 4 parts
 // 1. the state
 // 2. get the state
@@ -36,8 +25,19 @@ function createStore() {
     }
   }
 
+  const dispatch = (action) => {
+    // call todos function
+    state = reducer(state, action)
+    
+    // loop over listners and invoke them
+    listners.forEach((listner) => listner())
+  }
+
   return {
     getState,
-    subscribe
+    subscribe,
+    dispatch
   }
 }
+
+const store = createStore(todos)
