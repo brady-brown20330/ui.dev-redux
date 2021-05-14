@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Todos & Goals</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js'></script>
 </head>
 <body>
   <div>
@@ -22,38 +23,38 @@
     }
 
     // library code
-    function createStore(reducer) {
-      //the store has 4 parts
-      // 1. the state
-      // 2. get the state
-      // 3. listen for changes on state
-      // 4. update the state
+    // function createStore(reducer) {
+    //   //the store has 4 parts
+    //   // 1. the state
+    //   // 2. get the state
+    //   // 3. listen for changes on state
+    //   // 4. update the state
       
-        let state;
-        let listners = [];
+    //     let state;
+    //     let listners = [];
       
-        const getState = () => state
+    //     const getState = () => state
       
-        const subscribe = (listner) => {
-          listners.push(listner)
-          return () => {
-            listners = listners.filter((l) => l !== listner)
-          }
-        }
+    //     const subscribe = (listner) => {
+    //       listners.push(listner)
+    //       return () => {
+    //         listners = listners.filter((l) => l !== listner)
+    //       }
+    //     }
       
-        const dispatch = (action) => {
-          // call reducer function
-          state = reducer(state, action)
-          // loop over listners and invoke them
-          listners.forEach((listner) => listner())
-        }
+    //     const dispatch = (action) => {
+    //       // call reducer function
+    //       state = reducer(state, action)
+    //       // loop over listners and invoke them
+    //       listners.forEach((listner) => listner())
+    //     }
       
-        return {
-          getState,
-          subscribe,
-          dispatch
-        }
-      }
+    //     return {
+    //       getState,
+    //       subscribe,
+    //       dispatch
+    //     }
+    //   }
 
     // app code
     const ADD_TODO = 'ADD_TODO'
@@ -125,14 +126,18 @@
       }
     }
 
-    function app (state = {}, action) {
-      return {
-        todos: todos(state.todos, action),
-        goals: goals(state.goals, action)
-      }
-    }
+    // function app (state = {}, action) {
+    //   return {
+    //     todos: todos(state.todos, action),
+    //     goals: goals(state.goals, action)
+    //   }
+    // }
 
-    const store = createStore(app)
+    // const store = createStore(app)
+    const store = Redux.createStore(Redux.combineReducers({
+      todos,
+      goals,
+    }))
 
     store.subscribe(() => {
       const { goals, todos } = store.getState()
